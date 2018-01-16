@@ -6,11 +6,15 @@ import hmac
 import botocore.session
 import botocore.exceptions
 
+# def _hash_original(value):
+#     # test_key = bytes(os.environ["TEST_KEY"], "utf-8").decode('unicode_escape')
+#     return hmac.new(os.environ["TEST_KEY"], value, digestmod=hashlib.sha256).hexdigest()
 
-def _hash(value):
-    return hmac.new(os.environ['TEST_KEY'], value,
-                    digestmod=hashlib.sha256).hexdigest()
-
+def _hash(data):
+  key = os.environ["TEST_KEY"] # Defined as a simple string.
+  key_bytes= bytes(key , 'latin-1')
+  data_bytes = bytes(data, 'latin-1') # Assumes `data` is also a string.
+  return hmac.new(key_bytes, data_bytes , digestmod=hashlib.sha256).hexdigest()
 
 def main():
     access_key = getpass.getpass("Access Key: ").strip()
